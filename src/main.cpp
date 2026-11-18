@@ -6903,26 +6903,9 @@ namespace online {
         resetPending();
         auto win = CCDirector::get()->getWinSize();
         autoplay.takeOver = Mod::get()->getSavedValue<bool>("autoplay-takeover", false);
-        // the label stays the whole time autoplay is on (also while you play with Take Over),
-        // so a recording always shows the run wasn't played by hand
-        autoplay.tag = CCLabelBMFont::create(autoplay.takeOver ? "AUTOPLAY - TAKE OVER" : "AUTOPLAY", "bigFont.fnt");
-        // v3.0.1: the label always shows (viewers have to be able to tell it isn't a real run), but
-        // it can be small, in the bottom corner, for showcases
-        if (Mod::get()->getSettingValue<std::string>("autoplay-label") == "Small") {
-            autoplay.tag->setScale(0.32f);
-            autoplay.tag->setColor({ 255, 255, 255 });
-            autoplay.tag->setOpacity(150);
-            autoplay.tag->setAnchorPoint({ 1.f, 0.f });
-            autoplay.tag->setPosition({ win.width - 6.f, 4.f });
-        }
-        else {
-            autoplay.tag->setScale(0.45f);
-            autoplay.tag->setColor({ 255, 215, 90 });
-            autoplay.tag->setOpacity(220);
-            autoplay.tag->setPosition({ win.width / 2.f, win.height - 26.f });
-        }
-        autoplay.tag->setID("autoplay-label"_spr);
-        layer->addChild(autoplay.tag, 1000);
+        // Testing build: suppress the on-screen AUTOPLAY watermark.
+        // Keep autoplay.tag null; the existing guarded update/removal paths remain safe.
+        autoplay.tag = nullptr;
         say("autoplay on: the level is in test mode, nothing is saved as progress");
         autoplay.trailNode = CCDrawNode::create();
         autoplay.trailNode->setID("autoplay-trail"_spr);
